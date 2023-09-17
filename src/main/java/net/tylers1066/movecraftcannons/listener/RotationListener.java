@@ -35,9 +35,7 @@ public class RotationListener implements Listener {
 
         if (playerUUID == null) return;
 
-        Set<Cannon> cannons = MovecraftCannons.getInstance().getCannons(
-                craft.getHitBox(), e.getCraft().getWorld(), playerUUID
-        );
+        Set<Cannon> cannons = MovecraftCannons.getInstance().getCannons(craft.getHitBox(), e.getCraft().getWorld());
 
         Vector v = e.getOriginPoint().toBukkit(craft.getWorld()).toVector();
         for (Cannon c : cannons) {

@@ -26,10 +26,7 @@ public class TranslationListener implements Listener {
         if (!(craft instanceof PilotedCraft))
             return;
 
-        Set<Cannon> cannons = MovecraftCannons.getInstance().getCannons(
-                craft.getHitBox(), craft.getWorld(),
-                ((PilotedCraft) craft).getPilot().getUniqueId()
-        );
+        Set<Cannon> cannons = MovecraftCannons.getInstance().getCannons(craft.getHitBox(), craft.getWorld());
 
         Vector v = delta(e);
         if (v == null)

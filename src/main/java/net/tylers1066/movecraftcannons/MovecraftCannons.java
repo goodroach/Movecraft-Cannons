@@ -6,6 +6,7 @@ import net.countercraft.movecraft.MovecraftLocation;
 import net.countercraft.movecraft.combat.MovecraftCombat;
 import net.countercraft.movecraft.util.hitboxes.HitBox;
 import net.tylers1066.movecraftcannons.config.Config;
+import net.tylers1066.movecraftcannons.directors.WeaponDirectors;
 import net.tylers1066.movecraftcannons.listener.CraftDetectListener;
 import net.tylers1066.movecraftcannons.listener.ProjectileImpactListener;
 import net.tylers1066.movecraftcannons.listener.RotationListener;
@@ -37,6 +38,7 @@ public final class MovecraftCannons extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        WeaponDirectors.register();
         MaxCannonsProperty.register();
     }
 
@@ -85,6 +87,7 @@ public final class MovecraftCannons extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CraftDetectListener(), this);
         getServer().getPluginManager().registerEvents(new TranslationListener(), this);
         getServer().getPluginManager().registerEvents(new RotationListener(), this);
+        getServer().getPluginManager().registerEvents(new WeaponDirectors(cannonsPlugin), this);
     }
 
     @Override
@@ -92,11 +95,11 @@ public final class MovecraftCannons extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public Set<Cannon> getCannons(@NotNull HitBox hitbox, @NotNull World world, @Nullable UUID uuid) {
-        List<Location> shipLocations = new ArrayList<>();
-        for (MovecraftLocation loc : hitbox) {
-            shipLocations.add(loc.toBukkit(world));
-        }
-        return cannonsPlugin.getCannonsAPI().getCannons(shipLocations, uuid, true);
+    public Set<Cannon> getCannons(@NotNull HitBox hitbox, @NotNull World world) {
+        double xLength = hitbox.getXLength() + 3;
+        double yLength = hitbox.getYLength() + 3;
+        double zLength = hitbox.getZLength() + 3;
+        return cannonsPlugin.getCannonManager().getCannonsInBox(hitbox.getMidPoint().toBukkit(world),
+                xLength, yLength, zLength);
     }
 }
